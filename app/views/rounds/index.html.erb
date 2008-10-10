@@ -1,0 +1,33 @@
+<div class="block">
+  <div class="title">
+    <h2>Rounds</h2>
+  </div>
+  
+  <table>
+    <tr>
+      <th>Ordering</th>
+      <th>Abbreviation</th>
+      <th>Description</th>
+      <th>Max Score</th>
+      <th></th>
+    </tr>
+
+  <% for round in @rounds %>
+    <tr>
+      <td><%=h round.ordering %></td>
+      <td><%=h round.abbreviation%></td>
+      <td><%=h round.description %></td>
+      <td><%=h round.max_score %></td>
+      <td>
+        <%= link_to 'Show', round %> |
+        <%= link_to 'Edit', edit_round_path(round) %> |
+        <%= link_to 'Destroy', round, :confirm => 'Are you sure?', :method => :delete %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+  <p class="links">
+  <%= link_to 'New Round', new_round_path %>
+  </p>
+</div>

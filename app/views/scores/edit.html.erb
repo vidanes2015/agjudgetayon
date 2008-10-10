@@ -1,0 +1,36 @@
+<div class="block">
+  <div class="title">
+    <h2>Edit Score</h2>
+  </div>
+  
+  <% form_for(@score) do |f| %>
+    <%= f.error_messages %>
+
+    <p>
+      <%= f.label :judge_id %><br />
+      <%= f.collection_select :judge_id, Judge.find(:all, :order => "alias"), :id, :alias %>
+    </p>
+    <p>
+      <%= f.label :round_id %><br />
+      <%= f.collection_select :round_id, Round.find(:all, :order => "ordering"), :id, :description %>
+    </p>
+    <p>
+      <%= f.label :contestant_id %><br />
+      <%= f.collection_select :contestant_id, Contestant.find(:all, :order => "number"), :id, :number%>
+    </p>
+    <p>
+      <%= f.label :value %><br />
+      <%= f.text_field :value %>
+    </p>
+    <p>
+      <%= f.check_box :locked %><%= f.label :locked %>
+    </p>
+    <p>
+      <%= f.submit "Update" %>
+    </p>
+  <% end %>
+
+  <p class="links">
+  <%= link_to 'Back', scores_path %>
+  </p>
+</div>

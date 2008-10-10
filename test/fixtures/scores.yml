@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  contestant_id: 1
+  judge_id: 1
+  round_id: 1
+  score: 9.99
+
+two:
+  contestant_id: 1
+  judge_id: 1
+  round_id: 1
+  score: 9.99

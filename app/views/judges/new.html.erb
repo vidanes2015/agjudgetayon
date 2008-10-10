@@ -1,0 +1,41 @@
+<div class="block">
+	<div class="title">
+		<h2>New Judge</h2>
+	</div>
+
+	<% form_for(@judge) do |f| %>
+	  <%= f.error_messages %>
+
+	  <p>
+	    <%= f.label :alias %><br />
+	    <%= f.text_field :alias %>
+	  </p>
+	  <p>
+      <%= f.label :name %><br />
+      <%= f.text_field :name %>
+    </p>
+	  <p>
+	    <%= f.label :username %><br />
+	    <%= f.text_field :username %>
+	  </p>
+	  <p>
+			<label for="user_password">Password</label><br />
+	    <%= f.password_field :password %>
+	  </p>
+	  <p>
+			<label for="user_password_confirmation">Confirmation</label><br />
+	    <%= f.password_field :password_confirmation %>
+	  </p>
+	  <p>
+      <label for="judge_rounds">Rounds</label><br/>
+      <%= select_tag("round_ids[]", options_for_select(Round.find(:all).collect { |r| [r.description, r.id] }, @judge.rounds.collect { |r| r.id}), {:multiple=>true, :size=>6})%></p>
+    <p>
+	  <p>
+	    <%= f.submit "Create" %>
+	  </p>
+	<% end %>
+
+	<p class="links">
+	<%= link_to 'Back', judges_path %>
+	</p>
+</div>

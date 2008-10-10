@@ -1,0 +1,24 @@
+domid = "r#{@score.round_id}c#{@score.contestant_id}j#{@score.judge_id}"
+#page.replace_html(domid, :partial => "newscore", :object=>@score, :locals => {:judge=>@score.judge, :round=>@score.round, :contestant=>@score.contestant} )
+#page["fld_#{domid}"].focus
+#:onchange => "this.style.borderColor='#FF0000';document.getElementById('finalize_#{round.id}').style.display='none' "
+#logger.info("@score.value_before_type_cast: '#{@score.value_before_type_cast}'")
+#logger.info("@score.value_before_type_cast.nil?: '#{@score.value_before_type_cast.nil?}'")
+if not @score.valid? and not @score.value_before_type_cast.nil?
+#  logger.info("ERROR")
+  page.visual_effect(:shake , "fld_#{domid}")
+  page << "document.getElementById(\"fld_#{domid}\").style.borderColor='#FF0000';"
+  page << "document.getElementById(\"fld_#{domid}\").style.background='#FF9696';"
+else
+  page << "document.getElementById(\"fld_#{domid}\").style.borderColor='#626262';"  
+  page << "document.getElementById(\"fld_#{domid}\").style.background='#FEFEFE';"
+end
+page.replace_html("total_#{@score.contestant_id}", number_with_precision(Score.judge_total_for_contestant(@score.judge, @score.contestant), 2))
+for c in @contestants
+  page.replace_html("rank_#{c.id}", "(#{@judge_rankings[c.id]})")
+end
+if not Score.scoring_complete_for_round_and_judge?(@score.round, @score.judge)
+  page.hide("finalize_#{@score.round_id}")
+else
+  page.show("finalize_#{@score.round_id}")
+end

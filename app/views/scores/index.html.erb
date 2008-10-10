@@ -1,0 +1,61 @@
+<div class="block">
+  <div class="title">
+    <h2>Scores <% if not Score.scoring_locked?%>(incomplete)<% end %></h2>
+  </div>
+  
+  <table>
+    <tr>
+      <th></th>
+        <% @contestants.each do |c| -%>
+          <th align="center"><%= c.number %></th>
+        <% end -%>
+    </tr>
+    <% @rounds.each do |r| -%>
+      <tr><th colspan="<%= @contestants.size+1%>"><%= r.ordering %>. <%= r.description %> (<%= r.max_score %>)<th></tr>
+      <% r.judges.each do |j| -%>
+        <tr>
+          <td>&nbsp&nbsp&nbsp&nbsp <%= j.alias %></td>
+          <% @contestants.each do |c| -%>
+            <%= render(:partial => '/scores/showscore', :locals => {:contestant_id => c.id, :judge_id=>j.id, :round_id=>r.id}) -%>
+          <% end -%>
+        </tr>
+      <% end -%>
+      <tr>
+        <th>&nbsp&nbsp&nbsp&nbsp Averages</th>
+        <% @contestants.each do |c| -%>
+          <td align="right"><%= number_with_precision(Score.round_average_for_contestant(r, c),2) %> (<%= @round_rankings[r.id][c.id] %>)</td>
+        <% end -%>
+      </tr>
+      <tr><td>&nbsp</td></tr>
+    <% end %>
+    <tr><td>&nbsp</td></tr>
+    <tr><th colspan="<%=@contestants.size%>">Judge Totals</th></tr>
+    <% @judges.each do |j| -%>
+      <tr>
+        <td>&nbsp&nbsp&nbsp&nbsp <%= j.alias %></td>
+        <% @contestants.each do |c| %>
+          <td align="right"><%= number_with_precision(Score.judge_total_for_contestant(j, c),2) %> (<%= @judge_rankings[j.id][c.id]%>)</td>
+        <% end -%>
+      </tr>
+    <% end -%>
+    <tr><td>&nbsp</td></tr>
+    <tr>
+      <th>Grand Totals</th>
+      <% @contestants.each do |c| -%>
+        <td align="right"><b><%= number_with_precision(Score.score_for_contestant(c),2) %> (<%= @rankings[c.id]%>)</b></td>
+      <% end -%>
+    </tr>
+  </table>
+  
+
+  <p class="links">
+  <%= link_to 'New Score', new_score_path %> | 
+  <%= link_to 'Destroy All Scores', destroy_all_scores_url, :method=>:delete, :confirm=>"Are you sure?" %> | 
+  <%= link_to 'Printable Detailed Report', report_scores_url(:format=>:pdf)%><br/>
+   
+  <% @judge_groupings.each do |g| -%>
+    <%= link_to "Printable Simple Report (#{(g.collect {|j| j.alias}).join(", ")})", simple_report_scores_url(:format=>:pdf, :judges=>g)%><br/>
+  <% end -%>
+  
+  </p>
+</div>

@@ -1,0 +1,32 @@
+<div class="block">
+  <div class="title">
+    <h2>Judges</h2>
+  </div>
+
+  <table>
+    <tr>
+      <th>Alias</th>
+      <th>Name</th>
+      <th>Username</th>
+      <th></th>
+    </tr>
+
+  <% for judge in @judges %>
+    <tr>
+      <td><%=h judge.alias %></td>
+      <td><%=h judge.name %></td>
+      <td><%=h judge.username %></td>
+      <td>
+        <%= link_to 'Record', record_scores_judge_url(judge)%> | 
+        <%= link_to 'Show', judge %> | 
+        <%= link_to 'Edit', edit_judge_path(judge) %> | 
+        <%= link_to 'Destroy', judge, :confirm => 'Are you sure?', :method => :delete %>
+      </td>
+    </tr>
+  <% end %>
+  </table>
+
+  <p class="links">
+  <%= link_to 'New Judge', new_judge_path %>
+  </p>
+</div>

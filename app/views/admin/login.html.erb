@@ -1,0 +1,23 @@
+<div class="block">
+  <div class="title">
+    <h2>Please Log In:</h2>
+  </div>
+  <% form_tag do %>
+    <p style="color:red"><%= flash.now[:notice] %></p> 
+    
+    <p>
+      <label for="name">Username:</label>
+      <%= text_field_tag :username, params[:username] %>
+    </p>
+  
+    <p>
+      <label for="name">Password:</label>
+      <%= password_field_tag :password, params[:password] %>
+    </p>
+  
+    <p>
+      <%= submit_tag "Login" %>
+    </p>
+  <% end %>
+</div>
+    
