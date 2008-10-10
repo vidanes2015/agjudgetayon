@@ -1,0 +1,35 @@
+	<div class="block">
+		<div class="title">
+			<h2>edit Round</h2>
+		</div>
+
+	<% form_for(@round) do |f| %>
+	  <%= f.error_messages %>
+
+	  <p>
+	    <%= f.label :ordering %><br />
+	    <%= f.text_field :ordering %>
+	  </p>
+	  <p>
+	    <%= f.label :abbreviation %><br />
+	    <%= f.text_field :abbreviation %>
+	  </p>
+	  <p>
+	    <%= f.label :description %><br />
+	    <%= f.text_field :description %>
+	  </p>
+	  <p>
+	    <%= f.label :max_score %><br />
+	    <%= f.text_field :max_score %>
+	  </p>
+	  <p>
+	    <label for="round_judges">Judges</label><br/>
+      <%= select_tag("judge_ids[]", options_for_select(Judge.find(:all).collect { |j| ["#{j.alias} (#{j.username})", j.id] }, @round.judges.collect { |j| j.id}), {:multiple=>true, :size=>6})%></p>
+	  <p>
+	    <%= f.submit "Update" %>
+	  </p>
+	<% end %>
+	<p class="links">
+	<%= link_to 'Back', rounds_path %>
+	</p>
+</div>

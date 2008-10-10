@@ -1,0 +1,29 @@
+<div class="block">
+	<div class="title">
+		<h2>Contestants</h2>
+	</div>
+
+	<table>
+	  <tr>
+	    <th>Number</th>
+	    <th>Name</th>
+			<th></th>
+	  </tr>
+
+	<% for contestant in @contestants %>
+	  <tr>
+	    <td><%=h contestant.number %></td>
+	    <td><%=h contestant.name %></td>
+	    <td>
+				<%= link_to 'Show', contestant %> |
+	    	<%= link_to 'Edit', edit_contestant_path(contestant) %> |
+	    	<%= link_to 'Destroy', contestant, :confirm => 'Are you sure?', :method => :delete %>
+			</td>
+	  </tr>
+	<% end %>
+	</table>
+
+	<p class="links">
+	<%= link_to 'New Contestant', new_contestant_path %>
+	</p>
+</div>

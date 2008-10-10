@@ -1,0 +1,25 @@
+<div class="block">
+	<div class="title">
+		<h2>New Contestant</h2>
+	</div>
+	
+	<% form_for(@contestant) do |f| %>
+	  <%= f.error_messages %>
+
+	  <p>
+	    <%= f.label :number %><br />
+	    <%= f.text_field :number %>
+	  </p>
+	  <p>
+	    <%= f.label :name %><br />
+	    <%= f.text_field :name %>
+	  </p>
+	  <p>
+	    <%= f.submit "Create" %>
+	  </p>
+	<% end %>
+
+	<p class="links">
+	<%= link_to 'Back', contestants_path %>
+	</p>
+</div>

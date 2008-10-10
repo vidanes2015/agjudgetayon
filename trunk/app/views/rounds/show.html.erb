@@ -1,0 +1,31 @@
+<div class="block">
+  <div class="title">
+    <h2><%=h @round.ordering%>. <%=h @round.description %> <% if not Score.scoring_locked_for_round?(@round) -%> (Incomplete) <% end -%></h2>
+    <p>Max Score: <%=h number_with_precision(@round.max_score, 2) %></p>
+  </div>
+
+  <table>
+    <tr>
+      <th>Contestant</th>
+      <% for j in @judges -%>    
+        <th align="right"><%= j.alias %></th>
+      <% end -%>
+      <th align="right">Average</th>
+    </tr>
+    <% for c in @contestants -%>
+    <tr>
+      <td><%= c.number %></td>
+      <% for j in @judges -%>  
+        <%= render(:partial => '/scores/showscore', :locals => {:contestant_id => c.id, :judge_id=>j.id, :round_id=>@round.id}) -%>
+      <% end -%>
+      <td align="right"><%= number_with_precision(Score.round_average_for_contestant(@round, c), 2) %> (<%= @round_rankings[c.id]%>)</td>
+    </tr>
+    <% end -%>
+  </table>
+  
+  <p class="links">
+  <%= link_to 'Destroy Round\'s Scores', destroy_all_scores_url(:round_id => @round.id), :method=>:delete, :confirm=>"Are you sure?" %> | 
+  <%= link_to 'Printable Report', report_round_url(:id=>@round.id, :format=>:pdf) %>
+  </p>
+
+</div>
