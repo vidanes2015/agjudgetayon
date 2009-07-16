@@ -1,0 +1,18 @@
+<p>
+  <%= link_to 'Back', @pageant %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
+
+<h2>Editing Pageant</h2>
+
+<% form_for(@pageant) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>

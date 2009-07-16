@@ -1,0 +1,75 @@
+<p>
+  <%= link_to 'New Pageant', new_pageant_path %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
+
+<div id="vertical_container">
+  <% @pageants.each do |pageant| %>
+    <h1 class="accordion_toggle" <%if pageant == @pageant %> id="open" <% end %> > <%=h pageant.title  %> </h1>
+    <div class="accordion_content">
+      <p>
+      <%= link_to 'Show Pageant Scores', pageant_scores_url(@pageant) %> |
+      <%= link_to 'Edit Pageant', edit_pageant_path(pageant) %> |
+      <%= link_to 'Destroy Pageant', pageant, :confirm => 'Are you sure?', :method => :delete %>
+      </p>
+      <div class="left">
+        <h2>Rounds <span><%= link_to 'Add', new_pageant_round_path(:pageant_id=>pageant.id) %></span></h2>
+        <ol id="pageant_<%=  pageant.id %>_rounds">
+          <% pageant.rounds.each do |round| %>
+            <% content_tag_for :li, round do %>
+              <%= image_tag("move.png", :mouseover=>"move_active.png", :class=>"handle") %>
+              <%= link_to image_tag("show.png", :mouseover=>"show_active.png"), pageant_round_url(:id => round.id, :pageant_id => pageant.id) %>
+              <%= link_to image_tag("edit.png", :mouseover=>"edit_active.png"), edit_pageant_round_url(:id => round.id, :pageant_id => pageant.id) %>
+              <%= link_to image_tag("delete.png", :mouseover=>"delete_active.png"), pageant_round_url(:id => round.id, :pageant_id => pageant.id), :confirm => 'Are you sure?', :method => :delete %>
+              <%= round.abbreviation %>: <%= round.description %>
+            <% end %>
+          <% end %>
+        </ol>
+        <%= sortable_element("pageant_#{pageant.id}_rounds", :handle=>"handle", :url => sort_pageant_rounds_path(:pageant_id => pageant.id) ) %>
+      </div>
+      <div class="center">
+        <h2>Contestants <span><%= link_to 'Add', new_pageant_contestant_path(:pageant_id=>pageant.id) %></span></h2>
+        <ol id="pageant_<%=  pageant.id %>_contestants">
+          <% pageant.contestants.each do |contestant| %>
+            <% content_tag_for :li, contestant do %>
+              <%=  image_tag("move.png", :mouseover=>"move_active.png", :class=>"handle") %>
+              <span class="links">
+                <%= link_to image_tag("show.png", :mouseover=>"show_active.png"), pageant_contestant_url(:id => contestant.id, :pageant_id => pageant.id) %>
+                <%= link_to image_tag("edit.png", :mouseover=>"edit_active.png"), edit_pageant_contestant_url(:id => contestant.id, :pageant_id => pageant.id) %>
+                <%= link_to image_tag("delete.png", :mouseover=>"delete_active.png"), pageant_contestant_url(:id => contestant.id, :pageant_id => pageant.id), :confirm => 'Are you sure?', :method => :delete %>
+              </span>
+              <%=h contestant.name %>
+            <% end %>
+          <% end %>
+        </ol>
+        <%= sortable_element("pageant_#{pageant.id}_contestants", :handle=>"handle", :url => sort_pageant_contestants_path(:pageant_id => pageant.id) ) %>
+      </div>
+      <div class="right">
+      <h2>Judges <span><%= link_to 'Add', new_pageant_judge_path(:pageant_id=>pageant.id) %></span></h2>
+        <ul id="pageant_<%=  pageant.id %>_judges">
+          <% pageant.judges.each do |judge| %>
+            <% content_tag_for :li, judge do %>
+              <span class="links">
+                <%= link_to image_tag("show.png", :mouseover=>"show_active.png"), pageant_judge_url(:id => judge.id, :pageant_id => pageant.id) %>
+                <%= link_to image_tag("edit.png", :mouseover=>"edit_active.png"), edit_pageant_judge_url(:id => judge.id, :pageant_id => pageant.id) %>
+                <%= link_to image_tag("delete.png", :mouseover=>"delete_active.png"), pageant_judge_url(:id => judge.id, :pageant_id => pageant.id), :confirm => 'Are you sure?', :method => :delete %>
+              </span>
+              <%=h judge.name %>
+            <% end %>
+          <% end %>
+        </ul>      
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  Event.observe(window, 'load', loadAccordions, false);
+  
+  function loadAccordions() {
+    var verticalAccordion = new accordion('vertical_container');
+    // Now lets open the first slide
+    verticalAccordion.activate($$('#vertical_container #open')[0]);
+  }
+
+</script>

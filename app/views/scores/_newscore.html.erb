@@ -1,8 +1,9 @@
 <% score = @score || Score.find_by_judge_id_and_round_id_and_contestant_id(judge.id, round.id, contestant.id) -%>
-<% domid = "r#{round.id}c#{contestant.id}j#{judge.id}" -%>
+<% domid = "p#{pageant.id}r#{round.id}c#{contestant.id}j#{judge.id}" -%>
 <div id='<%=domid%>'>
   <% if score == nil -%>
     <% score = Score.new %>
+    <% score.pageant = pageant %>
     <% score.contestant = contestant -%>
     <% score.judge = judge -%>
     <% score.round = round -%>
@@ -10,6 +11,7 @@
   <% end -%>
   <% if not score.locked -%>
     <% form_tag '/', :method=>:post, :id=>"form_#{domid}" do %>
+      <%= hidden_field_tag :pageant_id, score.pageant_id %>
       <%= hidden_field_tag :contestant_id, score.contestant_id %>
       <%= hidden_field_tag :judge_id, score.judge_id %>
       <%= hidden_field_tag :round_id, score.round_id %>

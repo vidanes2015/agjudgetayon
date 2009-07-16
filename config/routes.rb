@@ -1,12 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :scores, :member =>{:lock_scores => :post}, :collection => {:destroy_all => :delete, :report => :get, :simple_report => :get}
-
-  map.resources :rounds, :member => {:report => :get}
-
-  map.resources :judges, :member => {:record_scores => :get, :report => :get}
-
-  map.resources :contestants
-
+  map.resources :pageants do |pageant|
+    pageant.resources :rounds, :member => {:report => :get}, :collection => { :sort => :post }
+    pageant.resources :contestants, :collection => { :sort => :post }
+    pageant.resources :judges, :member => {:record_scores => :get, :report => :get}
+    pageant.resources :scores, :member =>{:lock_scores => :post}, :collection => {:destroy_all => :delete, :report => :get, :simple_report => :get}
+  end
+  map.resources :admins, :collection => {:logout => :get}
   
   # The priority is based upon order of creation: first created -> highest priority.
 
@@ -40,7 +39,7 @@ ActionController::Routing::Routes.draw do |map|
   #   end
 
   # You can have the root of your site routed with map.root -- just remember to delete public/index.html.
-  map.root :controller => "admin", :action=>"login"
+  map.root :controller => "admins", :action=>"login"
 
   # See how all your routes lay out with "rake routes"
 

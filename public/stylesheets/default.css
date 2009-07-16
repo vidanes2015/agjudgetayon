@@ -1,289 +1,344 @@
 /*
-Design by Free CSS Templates
-http://www.freecsstemplates.org
-Released for free under a Creative Commons Attribution 2.5 License
+	Yes this layout was inspired by lightbox v2.0's page, the reason being, the layout works really well for a doc
 */
 
+*, html, body {
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+html {
+  height: 100%;
+}
+
 body {
-	margin: 30px 0 0 0;
-	padding: 0;
-	background: #1F2429;
-	text-align: justify;
-	font: 15px Arial, Helvetica, sans-serif;
-	color: #626262;
-}
-
-form {
-	margin: 0;
-	padding: 0;
-}
-
-input {
-	padding: 5px;
-	background: #FEFEFE;
-	border: 1px solid #626262;
-	font: normal 1em Arial, Helvetica, sans-serif;
-}
-
-h1, h1 a, h2, h2 a, h3, h3 a {
-	margin: 0;
-	text-decoration: none;
-	font-family: Tahoma, Georgia, "Times New Roman", Times, serif;
-	font-weight: normal;
-	color: #444444;
+  background: #171b20;
+  color: #ffffff;
+  font-family: 'Lucida Grande', Verdana, Arial;
+  font-size: 12px;
+  height: 100%;
 }
 
 h1 {
-	letter-spacing: -1px;
-	font-size: 2.2em;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+  color: #96BF55;
+  font-size: 20px;
+  font-weight: normal;
+  margin: 5px 0 5px 0;
+  text-align: left;
+}
+
+h1 span {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: normal;
+  margin: 5px 5px 5px 0;
+  text-align: left;
+}
+
+.description {
+  font-size: 12px;
+  line-height: 18px;
+  color: #ffffbe;
+  padding: 5px 0 15px 0;
+}
+
+#container {
+  margin: 20px auto 0 auto;
+  width: 750px;
+}
+
+#top_container {
+  width: 680px;
+  height: 130px;
+  margin: 10px auto 10px auto;
+}
+
+#bottom_container {
+  clear: both;
+  width: 700px;
+}
+
+.page-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 10px;
+  background-color: #09f;
+  border-bottom: 5px solid #444444;
+}
+
+.page-sidebar {
+  position: fixed;
+  top: 30px;
+  left: 20px;
+  width: 250px;
+}
+
+* html .page-sidebar {
+  top: 30px;
+  left: 20px;
+  width: 250px;
+  position: absolute;
+}
+
+.page-title {
+  margin: 0;
+  padding: 0 0 10px 0;
+  text-align: left;
+}
+
+.page-title h1 {
+  margin: 0 0 5px 0;
+}
+
+.page-title h2 {
+  clear: both;
+  font-size: 100%;
+  color: #FF9;
+  font-weight: normal;
+  margin: 0;
+}
+
+.page-body {
+  margin: 0 10% 0 315px;
+  width: 750px;
+  padding: 30px 0 20px 0;
+  text-align: left;
+}
+
+.page-footer {
+  margin: 20px  0 0 0;
+  text-align: left;
+  font-size: 10px;
+}
+
+.page-body ul, .page-body ol {
+  color: #ffffff;
+  margin: 10px 0 30px 25px;
+}
+
+.page-body ul li,
+.page-body ol li {
+  padding: 0;
+  margin: 0 0 5px 0;
+  color: #cccccc;
+  line-height: 140%;
+  font-size: 100%;
+}
+
+.page-footer p {
+  margin: 0;
+}
+
+.page-title h1 span {
+  text-align: left;
+  font-weight: normal;
+  font-size: 100%;
+  color: #ffffff;
+  margin: 5px 0 15px 0;
+}
+
+a,
+a:link,
+a:visited {
+  color: #09f;
 }
 
 h2 {
-	letter-spacing: -1px;
-	font-size: 2em;
-}
-
-h3 {
-	font-size: 1em;
-}
-
-p, ol, ul {
-	margin-bottom: 2em;
-	line-height: 200%;
-}
-
-blockquote {
-	margin: 0 0 0 1.5em;
-	padding-left: 1em;
-	border-left: 5px solid #DDDDDD;
-}
-
-a {
-	color: #59C0F8;
-}
-
-a:hover {
-	text-decoration: none;
-}
-
-/* Header */
-
-#header {
-	background: #FEFEFE url(../images/img01.jpg) repeat-x;
-	height: 42px;
-}
-
-#logo h1, #logo p {
-	float: left;
-	text-transform: lowercase;
-}
-
-#logo h1 {
-	padding: 0px 0 0 40px;
-}
-
-#logo p {
-	margin: 0;
-	padding: 14px 0 0 4px;
-	line-height: normal;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-size: 14px;
-}
-
-#logo a {
-	text-decoration: none;
-	color: #FFFFFF;
-}
-
-#menu {
-	float: right;
-}
-
-#menu ul {
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-#menu li {
-	display: block;
-	float: left;
-	height: 42px;
-}
-
-#menu a {
-	display: block;
-	padding: 2px 20px 2px 20px;
-	margin-top: 10px;
-	margin-right: 2px;
-	background: #D8DFE6;
-	text-decoration: none;
-	text-align: center;
-	text-transform: lowercase;
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	font-weight: normal;
-	font-size: 14px;
-	color: #000000;
-}
-
-#menu .last {
-	margin-right: 20px;
-}
-
-#menu a:hover {
-	color: #000000;
-}
-
-#menu .current_page_item {
-}
-
-#menu .current_page_item a {
-}
-
-/* Page */
-
-#page {
-	background: #D8DFE6;
-	padding: 40px 40px 0 40px;
-}
-
-/* Content */
-
-#content {
-	background: #FFFFFF;
-/*  margin-right: 340px;*/
-	padding: 0 30px;
-	border-bottom: 3px solid #59C0F8;
-	border-top: 3px solid #59C0F8;
-}
-
-.block {
-	padding-top: 30px;
-	margin-bottom: 10px;
-}
-
-.block .title {
-	font-family: Tahoma, Georgia, "Times New Roman", Times, serif;
-}
-
-.block .title h2 {
-	padding: 0px 30px 5px 0px;
-	text-transform: lowercase;
-	font-weight: normal;
-	font-size: 2.2em;
-}
-
-.block .title p {
-	margin: 0;
-	padding: 10px 0 10px 0;
-/*  background: url(../images/img12.gif) no-repeat left center;*/
-/*  border-top: 1px #D8DFE6 dotted;*/
-	line-height: normal;
-/*  color: #BABABA;*/
-}
-
-.block .title p a {
-	color: #59C0F8;
-}
-
-block padding: 0;
-	border-top: 1px #D8DFE6 dotted;
-}
-
-.block .links {
-	padding: 5px 0;
-	border-top: 1px #D8DFE6 dotted;
-	border-bottom: 1px #D8DFE6 dotted;
-	margin-top: 10px;
-	text-align: right;
-}
-
-.block .links a {
-	font-weight: bold;
-}
-
-.block .links a:hover {
-}
-
-.block .links .more {
-}
-
-.block .links .comments {
-	padding-left: 20px;
-}
-
-/* Flash */
-.flash {
-  color:red;
-}
-
-/* Errors */
-.fieldWithErrors {
-  display:inline;
-}
-
-.fieldWithErrors input { 
-  border: 1px solid red;
-} 
-
-#errorExplanation {
-  float:right;
-  width: 400px;
-  border: 2px solid red;
-  padding: 7px;
-  padding-bottom: 12px;
-  margin-bottom: 20px;
-}
-
-#errorExplanation h2 {
   text-align: left;
-  padding: 5px 5px 5px 15px;
-  font-size: 1.0em;
-  margin: -7px;
-  background-color: #c00;
-  color: #fff;
+  font-weight: normal;
+  font-size: 150%;
+  color: #09f;
+  margin: 5px 0 15px 0;
 }
 
-#errorExplanation p {
-/*  color: #333;*/
-  margin-bottom: 0;
+h2 span {
+  clear: both;
+  font-size: 70%;
+  color: #FF9;
+}
+
+.notice {
+  border: 3px solid #ffffbe;
+  padding: 10px;
+  color: #ffffff;
+  background-color: #09f;
+  margin: 0 0 20px 0;
+}
+
+.notice p,
+.notice p a,
+
+li a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.navigation {
+  list-style: none;
+  margin: 10px 0 30px 0;
+  width: 200px;
+}
+
+.navigation li {
+  padding: 0;
+  margin: 0;
+}
+
+.navigation a,
+.navigation a:visited {
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 10px 0 10px;
+  border-bottom: 3px solid #171B20;
+  color: #ffffff;
+  background-color: #333333;
+  text-decoration: none;
+}
+
+.navigation a:hover {
+  color: #000000;
+  background-color: #a9d06a;
+}
+
+a.page-options {
+  color: #000000;
+  text-decoration: none;
+  display: block;
+  text-align: left;
   padding: 5px;
+  background: #a9d06a;
+  margin: 3px 0 0 0;
+  border-bottom: 1px solid #333333;
+  border-bottom: 1px solid #555555;
 }
 
-#errorExplanation ul li {
-  list-style: square;
+a.page-options:hover,
+a.page-options:focus {
+  color: #fff;
+  background: #09F;
 }
 
-/* Search */
-
-#search {
-	padding: 20px 30px 40px 30px;
+p small,
+li small {
+  color: #09F;
+  font-size: 100%;
 }
 
-#search input {
-	padding: 0;
-	width: 70px;
-	height: 29px;
-	background: #DFDFDF url(../images/img14.gif) repeat-x;
-	font-weight: bold;
+p {
+  line-height: 150%;
+  padding: 5px 0px 15px 0px;
 }
 
-#search #s {
-	padding: 5px;
-	width: 150px;
-	height: auto;
-	background: #FEFEFE url(../images/img13.gif) repeat-x;
-	border: 1px solid #626262;
-	font: normal 1em Arial, Helvetica, sans-serif;
+label {
+  display: inline-block;
+  width: 125px;
 }
 
-#search br {
-	display: none;
+p em,
+em {
+  color: #ffffff;
 }
 
+.hidden {
+  display: none;
+}
 
-/* Tables */
+pre {
+  font-size: 11px;
+  padding: 10px;
+  background: #000000;
+  overflow: auto;
+  margin: 10px 0 10px 0;
+}
+
+code {
+  color: #ffffff;
+  background: #000000;
+  font-family: Monaco, Courier, monotype;
+}
+
+/*
+Vertical Accordions
+*/
+
+.accordion_toggle {
+  display: block;
+  height: 30px;
+  width: 730px;
+  background-color: #a9d06a;
+  padding: 0 10px 0 10px;
+  line-height: 30px;
+  color: #ffffff;
+  font-weight: normal;
+  text-decoration: none;
+  outline: none;
+  font-size: 12px;
+  color: #000000;
+  border-bottom: 1px solid #cde99f;
+  cursor: pointer;
+  margin: 0 0 0 0;
+}
+
+.accordion_toggle_active {
+  background-color: #e0542f;
+  color: #ffffff;
+  border-bottom: 1px solid #f68263;
+}
+
+.accordion_content {
+  background-color: #ffffff;
+  color: #444444;
+  overflow: hidden;
+}
+
+.accordion_content h2 {
+  margin: 15px 0 5px 10px;
+  color: #0099FF;
+}
+
+.accordion_content p {
+  line-height: 150%;
+  padding: 5px 10px 15px 10px;
+}
+
+.accordion_content ol,
+.accordion_content ul {
+  line-height: 150%;
+  padding: 5px 10px 15px 10px;
+  list-style-type: none;
+}
+
+.accodion_content ol li {
+  width: 100%;
+}
+
+img.handle {
+  cursor: move;
+}
+
+div .left,
+div .center,
+div .right { 
+  float:left;
+  position: relative;
+  padding: 0 0 1em 0;
+  overflow: hidden;
+}
+
+div .left {
+	width: 40%;
+}
+
+div .center {
+	width: 30%;
+}
+
+div .right {
+	width: 30%;
+}
 
 table {
   width: 100%;
@@ -292,10 +347,6 @@ table {
 
 table a {
   font-size: .8em;
-}
-
-table tr:hover {
-  background: #D8DFE6;
 }
 
 thead {
@@ -310,43 +361,29 @@ tfoot a {
 	font-weight: bold;
 }
 
-/* Footer */
-
-#footer {
-	padding: 20px 0 10px 0;
-	background: #757575 repeat-x;
+table.judge {
+	width: 100%;
 }
 
-#footer p {
-	margin-bottom: 1em;
+table.judge th {
+	width: 170px;
 	text-align: center;
-	line-height: normal;
-	font-size: .9em;
-	color: #BABABA;
 }
 
-#footer a {
-	padding: 0 20px;
-	text-decoration: none;
-	color: #DDDDDD;
+table.judge td.contestant {
+	font-size: large;
 }
 
-#footer a:hover {
-	color: #FFFFFF;
+table.judge td {
+	height: 50px;
+	text-align: center;
 }
 
-#footer .rss {
-	background: url(../images/img18.gif) no-repeat left center;
+table.judge div.showscore {
+  text-align: center;
+  font-size: large;
 }
 
-#footer .xhtml {
-	background: url(../images/img19.gif) no-repeat left center;
-}
-
-#footer .css {
-	background: url(../images/img20.gif) no-repeat left center;
-}
-
-#footer .legal a {
-	padding: 0;
+div .fieldWithErrors {
+  display: inline;
 }

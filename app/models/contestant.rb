@@ -1,8 +1,9 @@
 class Contestant < ActiveRecord::Base
-  has_many :scores
+  has_many :scores, :dependent => :destroy
+  belongs_to :pageant
   
-  validates_presence_of :number, :name
-  validates_numericality_of :number, :only_integer => true, :greater_than => 0
-  validates_uniqueness_of :number
+  validates_presence_of :name
+  
+  acts_as_list :scope => 'pageant_id = #{pageant_id}'
 
 end

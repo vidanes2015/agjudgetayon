@@ -1,35 +1,35 @@
-<div class="block">
-  <div class="title">
-    <h2>Contestant #<%=h @contestant.number %><% if not Score.scoring_locked_for_contestant?(@contestant) -%> (Incomplete) <% end -%></h2>
-    <p><%=h @contestant.name %></p>
-  </div>
+<p>
+  <%= link_to 'Back', pageants_url(@pageant) %> |
+  <%= link_to 'Destroy Contestant\'s Scores', destroy_all_pageant_scores_url(:contestant_id => @contestant.id), :method=>:delete, :confirm=>"Are you sure?" %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
 
-  <table>
-    <tr>
-    <th>Round</th>
-      <% @rounds.each do |r| -%>
-        <th align="right" title="<%=r.description%>"><%= r.abbreviation %><br />(<%=r.max_score%>)</th>
-      <% end -%>
-    <th align="right">Total</th>
-    </tr>
-    <% @judges.each do |j| -%>
-      <tr>
-        <td><%= j.alias%></td>
-        <% @rounds.each do |r| -%>
-          <%= render(:partial => '/scores/showscore', :locals => {:contestant_id => @contestant.id, :judge_id=>j.id, :round_id=>r.id}) -%>
-        <% end -%>
-        <td align="right"><%= number_with_precision(Score.judge_total_for_contestant(j, @contestant), 2)%> (<%= @judge_rankings[j.id] %>)</td>
-      </tr>
-    <% end -%>
-    <th align="right">Average</th>
+<h2><%=h @contestant.position %>. <%=h @contestant.name %><% if not Score.scoring_locked_for_contestant?(@contestant) -%> (Incomplete) <% end -%></h2>
+
+<table>
+  <tr>
+  <th>Round</th>
     <% @rounds.each do |r| -%>
-      <td align="right"><%= number_with_precision(Score.round_average_for_contestant(r, @contestant),2) %> (<%= @round_rankings[r.id]%>)</td>
+      <th align="right" title="<%=r.description%>"><%= r.abbreviation %><br />(<%=r.max_score%>)</th>
     <% end -%>
-    <td align="right"><b><%= number_with_precision(Score.score_for_contestant(@contestant),2) %> (<%= @ranking %>)</b></td>
-  </table>
-
-  <p class="links">
-    <%= link_to 'Destroy Contestant\'s Scores', destroy_all_scores_url(:contestant_id => @contestant.id), :method=>:delete, :confirm=>"Are you sure?" %>
-  </p>
-
-</div>
+  <th align="right">Total</th>
+  </tr>
+  <% @judges.each do |j| -%>
+    <tr>
+      <td><%= j.alias%></td>
+      <% @rounds.each do |r| -%>
+        <%= render(:partial => '/scores/showscore', :locals => {:pageant_id => @pageant.id, :contestant_id => @contestant.id, :judge_id=>j.id, :round_id=>r.id}) -%>
+      <% end -%>
+      <td align="right"><%= number_with_precision(Score.judge_total_for_contestant(j, @contestant), :precision=>2)%> (<%= @judge_rankings[j.id] %>)</td>
+    </tr>
+  <% end -%>
+  <th align="right">Average</th>
+  <% @rounds.each do |r| -%>
+    <% if not r.manual -%>
+      <td align="right"><%= number_with_precision(Score.round_average_for_contestant(r, @contestant),:precision=>2) %> (<%= @round_rankings[r.id]%>)</td>
+    <% else -%>
+      <%= render(:partial => '/scores/showscore', :locals => {:pageant_id => @pageant.id, :contestant_id => @contestant.id, :judge_id=>nil, :round_id=>r.id}) -%>
+    <% end -%>
+  <% end -%>
+  <td align="right"><b><%= number_with_precision(Score.score_for_contestant(@contestant),:precision=>2) %> (<%= @ranking %>)</b></td>
+</table>

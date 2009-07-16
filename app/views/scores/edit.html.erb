@@ -1,36 +1,36 @@
-<div class="block">
-  <div class="title">
-    <h2>Edit Score</h2>
-  </div>
-  
-  <% form_for(@score) do |f| %>
-    <%= f.error_messages %>
+<p>
+  <%= link_to 'Back', session[:return_to] %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>  
+</p>
 
+<h2>Edit Score</h2>
+
+<% form_for([@pageant, @score]) do |f| %>
+  <%= f.error_messages %>
+
+  <% if not @score.round.manual %>
     <p>
-      <%= f.label :judge_id %><br />
-      <%= f.collection_select :judge_id, Judge.find(:all, :order => "alias"), :id, :alias %>
-    </p>
-    <p>
-      <%= f.label :round_id %><br />
-      <%= f.collection_select :round_id, Round.find(:all, :order => "ordering"), :id, :description %>
-    </p>
-    <p>
-      <%= f.label :contestant_id %><br />
-      <%= f.collection_select :contestant_id, Contestant.find(:all, :order => "number"), :id, :number%>
-    </p>
-    <p>
-      <%= f.label :value %><br />
-      <%= f.text_field :value %>
-    </p>
-    <p>
-      <%= f.check_box :locked %><%= f.label :locked %>
-    </p>
-    <p>
-      <%= f.submit "Update" %>
+      <%= f.label :judge_id %>
+      <%=@score.judge%>
     </p>
   <% end %>
-
-  <p class="links">
-  <%= link_to 'Back', scores_path %>
+  <p>
+    <%= f.label :round_id %>
+    <b><%= @score.round.description %></b>
   </p>
-</div>
+  <p>
+    <%= f.label :contestant_id %>
+    <b><%= @score.contestant.name %></b>
+  </p>
+  <p>
+    <%= f.label :value %>
+    <%= f.text_field :value %>
+  </p>
+  <p>
+    <%= f.label :locked %>
+    <%= f.check_box :locked %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>

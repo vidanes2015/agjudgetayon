@@ -1,102 +1,58 @@
 class RoundsController < ApplicationController
   layout "default", :except => [ :report ]
+  
+  before_filter :find_pageant
 
-  # GET /rounds
-  # GET /rounds.xml
-  def index
-    @rounds = Round.find(:all, :order => 'ordering')
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @rounds }
-    end
-  end
-
-  # GET /rounds/1
-  # GET /rounds/1.xml
   def show
-    @round = Round.find(params[:id])
-    @contestants = Contestant.find(:all, :order=>"number")
-    @judges = @round.judges #Judge.find(:all, :order=>"alias")
+    @round = @pageant.rounds.find(params[:id])
+    @contestants = @pageant.contestants.find(:all, :order=>"position")
+    @judges = @pageant.judges.find(:all, :order=>"alias")
     @round_rankings = Score.round_rankings(@round)
     session[:return_to] = request.request_uri
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @round }
-    end
   end
 
-  # GET /rounds/new
-  # GET /rounds/new.xml
   def new
     @round = Round.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @round }
-    end
   end
 
-  # GET /rounds/1/edit
   def edit
-    @round = Round.find(params[:id])
+    @round = @pageant.rounds.find(params[:id])
   end
 
-  # POST /rounds
-  # POST /rounds.xml
   def create
     @round = Round.new(params[:round])
-    @round.judges = Judge.find(params[:judge_ids]) if params[:judge_ids]
 
-    respond_to do |format|
-      if @round.save
-        flash[:notice] = "Round #{@round.description} was successfully created."
-        format.html { redirect_to(rounds_url) }
-        format.xml  { render :xml => @round, :status => :created, :location => @round }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @round.errors, :status => :unprocessable_entity }
-      end
+    if @pageant.rounds << @round
+      flash[:notice] = "Round #{@round.description} was successfully created."
+      redirect_to pageant_url(@pageant)
+    else
+      render :action => "new"
     end
   end
 
-  # PUT /rounds/1
-  # PUT /rounds/1.xml
   def update
-    @round = Round.find(params[:id])
-    @round.judges = Judge.find(params[:judge_ids]) if params[:judge_ids]
+    @round = @pageant.rounds.find(params[:id])
 
-    respond_to do |format|
-      if @round.update_attributes(params[:round])
-        flash[:notice] = "Round #{@round.description} was successfully updated."
-        format.html { redirect_to(rounds_url) }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @round.errors, :status => :unprocessable_entity }
-      end
+    if @round.update_attributes(params[:round])
+      flash[:notice] = "Round #{@round.description} was successfully updated."
+      redirect_to pageant_url(@pageant)
+    else
+      render :action => "edit"
     end
   end
 
-  # DELETE /rounds/1
-  # DELETE /rounds/1.xml
   def destroy
-    @round = Round.find(params[:id])
-    @round.scores.each { |s| s.destroy }
+    @round = @pageant.rounds.find(params[:id])
     @round.destroy
-
-    respond_to do |format|
-      format.html { redirect_to(rounds_url) }
-      format.xml  { head :ok }
-    end
+    
+    redirect_to pageant_url(@pageant)
   end
   
   def report
-    @round = Round.find(params[:id])
-    @judges = @round.judges #Judge.find(:all, :order=>'alias')
-    @contestants = Contestant.find(:all, :order=>'number')
-    @title = "#{@@pageant_title} - #{@round.description} Results (#{@round.max_score}) #{"(incomplete)" if not Score.scoring_locked_for_round?(@round) }"
+    @round = @pageant.rounds.find(params[:id])
+    @judges = @pageant.judges
+    @contestants = @pageant.contestants.find(:all, :order=>'position')
+    @title = "#{@pageant.title} - #{@round.description} Results (#{@round.max_score}) #{"(incomplete)" if not Score.scoring_locked_for_round?(@round) }"
     @headers = []
     @headers << "Contestant" << @judges.collect {|j| j.alias} << "Average"
     @headers.flatten!
@@ -104,7 +60,7 @@ class RoundsController < ApplicationController
     round_rankings = Score.round_rankings(@round)
     for c in @contestants
       row = []
-      row << c.number
+      row << c.position
       for j in @judges
         s = Score.find_by_round_id_and_judge_id_and_contestant_id(@round.id, j.id, c.id)
         if s and not s.locked
@@ -118,7 +74,23 @@ class RoundsController < ApplicationController
       row << sprintf("%.2f (%i)", Score.round_average_for_contestant(@round, c), round_rankings[c.id])
       @data << row
     end
-    prawnto :prawn=>{:page_size=>'A4', :page_layout => :landscape, :left_margin=>72, :right_margin=>72, :top_margin=>72, :bottom_margin=>72 }, :inline=>false, :filename => "#{@round.description} Results"
+    prawnto :prawn=>{:page_size=>'A4', :page_layout => :landscape, :left_margin=>72, :right_margin=>72, :top_margin=>72, :bottom_margin=>72 }, :inline=>true, :filename => "#{@round.description} Results"
+  end
+
+  def sort
+    pageant_id = params[:pageant_id]
+    params["pageant_#{pageant_id}_rounds"].each_with_index do |id, index|
+      Round.update_all(['position=?', index+1], ['id=?', id])
+    end
+    render :nothing => true
+  end
+  
+  private 
+  
+  def find_pageant 
+      @pageant_id = params[:pageant_id] 
+      return(redirect_to(pageants_url)) unless @pageant_id 
+      @pageant = Pageant.find(@pageant_id) 
   end
   
 end
