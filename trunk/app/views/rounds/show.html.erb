@@ -1,31 +1,38 @@
-<div class="block">
-  <div class="title">
-    <h2><%=h @round.ordering%>. <%=h @round.description %> <% if not Score.scoring_locked_for_round?(@round) -%> (Incomplete) <% end -%></h2>
-    <p>Max Score: <%=h number_with_precision(@round.max_score, 2) %></p>
-  </div>
+<p>
+  <%= link_to 'Back', pageants_url(@pageant) %> |
+  <%= link_to 'Destroy Round\'s Scores', destroy_all_pageant_scores_url(:round_id => @round.id), :method=>:delete, :confirm=>"Are you sure?" %> | 
+  <%= link_to 'Printable Report', report_pageant_round_url(:id=>@round.id, :format=>:pdf) %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
 
-  <table>
-    <tr>
-      <th>Contestant</th>
+<h2><%=h @round.position %>. <%=h @round.description %> <% if not Score.scoring_locked_for_round?(@round) -%> (Incomplete) <% end -%></h2>
+<p>Max Score: <%=h number_with_precision(@round.max_score, 2) %></p>
+
+<table>
+  <tr>
+    <th>Contestant</th>
+    <% if not @round.manual -%>
       <% for j in @judges -%>    
         <th align="right"><%= j.alias %></th>
       <% end -%>
       <th align="right">Average</th>
-    </tr>
-    <% for c in @contestants -%>
-    <tr>
-      <td><%= c.number %></td>
+    <% else -%>
+      <th align="right">Manual</th>
+    <% end -%>
+  </tr>
+  <% for c in @contestants -%>
+  <tr>
+    <td><%=h c.position%>. <%=h c.name %></td>
+    <% if not @round.manual -%>
       <% for j in @judges -%>  
-        <%= render(:partial => '/scores/showscore', :locals => {:contestant_id => c.id, :judge_id=>j.id, :round_id=>@round.id}) -%>
+        <%= render(:partial => '/scores/showscore', :locals => {:pageant_id => @pageant.id, :contestant_id => c.id, :judge_id=>j.id, :round_id=>@round.id}) -%>
       <% end -%>
       <td align="right"><%= number_with_precision(Score.round_average_for_contestant(@round, c), 2) %> (<%= @round_rankings[c.id]%>)</td>
-    </tr>
+    <% else -%>
+        <%= render(:partial => '/scores/showscore', :locals => {:pageant_id => @pageant.id, :contestant_id => c.id, :judge_id=>nil, :round_id=>@round.id}) -%>
     <% end -%>
-  </table>
-  
-  <p class="links">
-  <%= link_to 'Destroy Round\'s Scores', destroy_all_scores_url(:round_id => @round.id), :method=>:delete, :confirm=>"Are you sure?" %> | 
-  <%= link_to 'Printable Report', report_round_url(:id=>@round.id, :format=>:pdf) %>
-  </p>
+  </tr>
+  <% end -%>
+</table>
 
-</div>
+

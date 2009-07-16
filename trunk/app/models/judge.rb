@@ -1,6 +1,6 @@
 class Judge < ActiveRecord::Base
-  has_and_belongs_to_many :rounds, :order=>'ordering'
-  has_many :scores
+  has_many :scores, :dependent => :destroy
+  belongs_to :pageant
   
   validates_presence_of :username, :alias, :name
   validates_uniqueness_of :username, :alias

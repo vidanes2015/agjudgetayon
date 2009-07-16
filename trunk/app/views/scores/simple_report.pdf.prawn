@@ -9,16 +9,16 @@ pdf.text @title, :size=>14, :align=>:center
 pdf.text "#{Time.now.to_s}", :size=>8, :align=>:center
 pdf.move_down 14
 
-pdf.text "#{(@judges.collect {|j| j.alias}).join(", ")} - #{Round.total_possible_for_judge_grouping(@judges)}", :size=>12, :align=>:center
-for r in @judges[0].rounds
-  pdf.text "#{r.description} - #{r.max_score}", :size=>10, :align=>:center
-end
-pdf.move_down 14
-pdf.text "#{(@other_judges.collect {|j| j.alias}).join(", ")} - #{Round.total_possible_for_judge_grouping(@other_judges)}", :size=>12, :align=>:center
-for r in @other_judges[0].rounds
-  pdf.text "#{r.description} - #{r.max_score}", :size=>10, :align=>:center
-end
-pdf.move_down 14
+# pdf.text "#{(@judges.collect {|j| j.alias}).join(", ")} - #{Round.total_possible_for_judge_grouping(@judges)}", :size=>12, :align=>:center
+# for r in @judges[0].rounds
+#   pdf.text "#{r.description} - #{r.max_score}", :size=>10, :align=>:center
+# end
+# pdf.move_down 14
+# pdf.text "#{(@other_judges.collect {|j| j.alias}).join(", ")} - #{Round.total_possible_for_judge_grouping(@other_judges)}", :size=>12, :align=>:center
+# for r in @other_judges[0].rounds
+#   pdf.text "#{r.description} - #{r.max_score}", :size=>10, :align=>:center
+# end
+# pdf.move_down 14
 pdf.table @data,     
    :font_size  => 10, 
    :horizontal_padding => 10,

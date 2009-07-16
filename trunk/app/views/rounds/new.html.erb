@@ -1,37 +1,30 @@
-<div class="block">
-	<div class="title">
-		<h2>New Round</h2>
-	</div>
+<p>
+  <%= link_to 'Back', pageants_url(@pageant) %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
 
-	<% form_for(@round) do |f| %>
-	  <%= f.error_messages %>
+<h2>New Round</h2>
 
-	 <p>
-	    <%= f.label :ordering %><br />
-	    <%= f.text_field :ordering %>
-	  </p>
-	  <p>
-	    <%= f.label :abbreviation %><br />
-	    <%= f.text_field :abbreviation %>
-	  </p>
-	  <p>
-	    <%= f.label :description %><br />
-	    <%= f.text_field :description %>
-	  </p>
-	  <p>
-	    <%= f.label :max_score %><br />
-	    <%= f.text_field :max_score %>
-	  </p>
-	  <p>
-	    <label for="round_judges">Judges</label><br/>
-      <%= select_tag("judge_ids[]", options_for_select(Judge.find(:all).collect { |j| ["#{j.alias} (#{j.username})", j.id] }, @round.judges.collect { |j| j.id}), {:multiple=>true, :size=>6})%></p>
-	  <p>
-	  <p>
-	    <%= f.submit "Create" %>
-	  </p>
-	<% end %>
+<% form_for([@pageant, @round]) do |f| %>
+  <%= f.error_messages %>
 
-	<p class="links">
-	<%= link_to 'Back', rounds_path %>
-	</p>
-</div>
+  <p>
+    <%= f.label :abbreviation %>
+    <%= f.text_field :abbreviation %>
+  </p>
+  <p>
+    <%= f.label :description %>
+    <%= f.text_field :description %>
+  </p>
+  <p>
+    <%= f.label :max_score %>
+    <%= f.text_field :max_score %>
+  </p>
+  <p>
+    <%= f.label :manual %>
+    <%= f.check_box :manual %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>
+<% end %>

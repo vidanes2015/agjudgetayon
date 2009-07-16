@@ -1,0 +1,2 @@
+module PageantsHelper
+end

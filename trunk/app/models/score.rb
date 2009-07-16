@@ -2,66 +2,75 @@ class Score < ActiveRecord::Base
   belongs_to :contestant
   belongs_to :judge
   belongs_to :round
+  belongs_to :pageant
   
-  validates_presence_of :value, :contestant_id, :judge_id, :round_id
+  validates_presence_of :value, :contestant_id, :round_id
+  # :judge_id is not included above to allow for scores in manual rounds.
   validate :value_less_than_max
   validate :value_numericality_by_regex
   validate :one_score_for_judge_contestant_and_round
   
   
-  def self.scoring_locked?
-    expected = 0
-    Round.find(:all).each do |r|
-      expected += r.judges.size
+  def self.scoring_locked?(pageant)
+    pageant.rounds.each do |r|
+      return false if not scoring_locked_for_round?(r)
     end
-    expected *= Contestant.count
-    logger.info("Expected #{expected}")
-    logger.info("actual #{Score.count({:conditions => "locked = 't'"})}")
-    expected == Score.count({:conditions => "locked = 't'"})
+    return true
+    # expected = pageant.rounds.count * pageant.judges.count * pageant.contestants.count
+    # expected == pageant.scores.count({:conditions => "locked = 't'"})
   end
   
   def self.scoring_locked_for_contestant?(contestant)
     expected = 0
-    Round.find(:all).each do |r|
-      expected += r.judges.size
+    contestant.pageant.rounds.each do |r|
+      if r.manual 
+        expected += 1
+      else
+        expected += contestant.pageant.judges.size
+      end
     end
+#    expected = contestant.pageant.rounds.size * contestant.pageant.judges.size
     expected == Score.count_by_sql("select count(value) from scores where contestant_id = #{contestant.id} and locked = 't'")
   end
   
   def self.scoring_locked_for_round?(round)
-    Contestant.count*round.judges.size == Score.count_by_sql("select count(value) from scores where round_id = #{round.id} and locked = 't'")
+    if (round.manual)
+      expected = round.pageant.contestants.size
+    else
+      expected = round.pageant.contestants.size*round.pageant.judges.size 
+    end
+    expected == Score.count_by_sql("select count(value) from scores where round_id =  #{round.id} and locked = 't'")
   end
   
   def self.scoring_locked_for_judge?(judge)
-    judge.rounds.size*Contestant.count == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and locked = 't'")
+    expected = 0
+    judge.pageant.rounds.each do |r|
+      expected += judge.pageant.contestants.size if not r.manual
+    end
+#    expected = judge.pageant.rounds.size*judge.pageant.contestants.size 
+    expected == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and locked = 't'")
   end
   
   def self.scoring_complete_for_round_and_judge?(round, judge)
-    Contestant.count == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and round_id = #{round.id}")
+    expected = round.pageant.contestants.size
+    expected == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and round_id = #{round.id}")
   end
   
   def self.scoring_locked_for_round_and_judge?(round, judge)
-    Contestant.count == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and round_id = #{round.id} and locked = 't'")
+    expected = round.pageant.contestants.size
+    expected == Score.count_by_sql("select count(value) from scores where judge_id = #{judge.id} and round_id = #{round.id} and locked = 't'")
   end
   
   def self.score_for_contestant(contestant)
     total = 0.0
-    for r in Round.find(:all)
+    for r in contestant.pageant.rounds
       total += round_average_for_contestant(r, contestant) 
     end
     total
   end
   
-  def self.judge_group_average_for_contestant(judge_group, contestant)
-    total = 0.0
-    for j in judge_group
-      total += judge_total_for_contestant(j, contestant)
-    end
-    total/judge_group.size
-  end
-  
   def self.judge_total_for_contestant(judge, contestant)
-    s = Score.calculate(:sum, :value, :conditions => ["contestant_id=? and judge_id = ?", contestant.id, judge.id])
+    Score.calculate(:sum, :value, :conditions => ["contestant_id=? and judge_id = ?", contestant.id, judge.id])
   end
   
   def self.round_average_for_contestant(round, contestant)
@@ -69,6 +78,7 @@ class Score < ActiveRecord::Base
   end
   
   def self.rank_hash(values)
+    return {} if values.empty?
     values = values.sort {|a,b| a[1]<=>b[1]}
     values.reverse!
     result = {}
@@ -85,9 +95,9 @@ class Score < ActiveRecord::Base
     result
   end
   
-  def self.rankings
+  def self.rankings(pageant)
     data = {}
-    Contestant.find(:all).each do |c|
+    pageant.contestants.each do |c|
       data[c.id] = Score.score_for_contestant(c)
     end
     self.rank_hash(data)
@@ -95,7 +105,7 @@ class Score < ActiveRecord::Base
   
   def self.judge_rankings(judge)
     data = {}
-    Contestant.find(:all).each do |c|
+    judge.pageant.contestants.each do |c|
       data[c.id] = Score.judge_total_for_contestant(judge, c)
     end
     self.rank_hash(data)
@@ -103,7 +113,7 @@ class Score < ActiveRecord::Base
   
   def self.round_rankings(round)
     data = {}
-    Contestant.find(:all).each do |c|
+    round.pageant.contestants.each do |c|
       data[c.id] = Score.round_average_for_contestant(round, c)
     end
     self.rank_hash(data)

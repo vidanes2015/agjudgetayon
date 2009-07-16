@@ -1,3 +1,21 @@
+module Rails
+  class Configuration
+    def database_configuration
+      require 'erb'
+      conf = YAML::load(ERB.new(IO.read(database_configuration_file)).result)
+      if defined?(TAR2RUBYSCRIPT)
+        conf.each do |k, v|
+          if v["adapter"] =~ /^sqlite3/
+            v["database"] = oldlocation(v["database"]) if v.include?("database")
+            v["dbfile"]   = oldlocation(v["dbfile"])   if v.include?("dbfile")
+          end
+        end
+      end
+      conf
+    end
+  end
+end
+
 # Be sure to restart your server when you modify this file
 
 # Uncomment below to force Rails into production mode when

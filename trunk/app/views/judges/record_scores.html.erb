@@ -1,44 +1,46 @@
-<div class="block">
-  <div class="title">
-    <h2><%=h @judge.alias %></h2>
-    <p>Username: <%=h @judge.username %></p>
-  </div>
+<p>
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
+
+<h2><%=h @judge.alias %></h2>
+<p>Username: <%=h @judge.username %></p>
   
-  <div class="flash"><%=flash[:notice]%></div>
+<div class="flash"><%=flash[:notice]%></div>
   
-  <table>
-    <tr>
-    <th>Contestant</th>
-      <% @rounds.each do |r| -%>
-        <th title="<%= r.description%>"><%= r.abbreviation %> (<%= number_with_precision(r.max_score, 2) %>)
-      <% end -%>
-    <th>Total</th>
-    </tr>
-    <% @contestants.each do |c| -%>
-      <tr>
-        <td><%= c.number %></td>
-        <% @rounds.each do |r| -%>
-          <td><%= render(:partial => '/scores/newscore', :locals => {:round => r, :contestant => c, :judge => @judge}) -%></td>
-        <% end -%>
-        <td><div style="display:inline" id="total_<%=c.id%>"><%= number_with_precision(Score.judge_total_for_contestant(@judge, c), 2)%></div> <div id="rank_<%=c.id%>" style="display:inline">(<%=@judge_rankings[c.id]%>)</div></td>
-      </tr>
+<table class="judge">
+  <tr>
+  <th>Contestant</th>
+    <% @rounds.each do |r| -%>
+      <th title="<%= r.description%>"><%= r.abbreviation %> (<%= number_with_precision(r.max_score, :precision=>2) %>)
     <% end -%>
+  <th>Total</th>
+  </tr>
+  <% @contestants.each do |c| -%>
     <tr>
-        <td></td>
+      <td class="contestant"><%= c.position %></td>
       <% @rounds.each do |r| -%>
-        <td>
-          <% if not Score.scoring_locked_for_round_and_judge?(r, @judge) -%>
-            <% form_tag('/scores/lock_scores') do%>
-              <%= hidden_field_tag :judge_id, @judge.id %>
-              <%= hidden_field_tag :round_id, r.id %>
-              <%= submit_tag "Finalize",  :confirm=>"Scores cannot be changed after finalizing.  Continue?", :id=>"finalize_#{r.id}"%>
-            <% end -%>
-          <% end -%>
-        </td>
+        <td><%= render(:partial => '/scores/newscore', :locals => {:pageant => @pageant, :round => r, :contestant => c, :judge => @judge}) -%></td>
       <% end -%>
+      <td><div class="showscore" style="display:inline" id="total_<%=c.id%>"><%= number_with_precision(Score.judge_total_for_contestant(@judge, c), :precision=>2)%></div> <div id="rank_<%=c.id%>" style="display:inline">(<%=@judge_rankings[c.id]%>)</div></td>
     </tr>
+  <% end -%>
+  <tr>
+      <td></td>
+    <% @rounds.each do |r| -%>
+      <td>
+        <% if not Score.scoring_locked_for_round_and_judge?(r, @judge) -%>
+          <% form_tag :action => 'lock_scores', :controller => 'scores' do%>
+            <%= hidden_field_tag :pageant_id, @pageant.id %>
+            <%= hidden_field_tag :judge_id, @judge.id %>
+            <%= hidden_field_tag :round_id, r.id %>
+            <%= submit_tag "Finalize",  :confirm=>"Scores cannot be changed after finalizing.  Continue?", :id=>"finalize_#{r.id}"%>
+          <% end -%>
+        <% end -%>
+      </td>
+    <% end -%>
+  </tr>
   </table>
-</div>
+
 
 <script type="text/javascript" charset="utf-8">
   function hideFinalizesButtons() {

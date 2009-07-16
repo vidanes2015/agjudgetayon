@@ -1,8 +1,8 @@
 <td align="right">
-<% s = Score.find_by_judge_id_and_contestant_id_and_round_id(judge_id, contestant_id, round_id) -%>
+<% s = Score.find_by_pageant_id_and_judge_id_and_contestant_id_and_round_id(pageant_id, judge_id, contestant_id, round_id) -%>
 <% if s -%>
   <%= "*" if s and not s.locked%>
-  <%=h number_with_precision(s.value, 2) if s %> [<%= link_to 'e', edit_score_path(s) %>|<%= link_to 'd', s, :confirm => 'Are you sure?', :method => :delete %>]
+  <%=h number_with_precision(s.value, 2) if s %> [<%= link_to 'e', edit_pageant_score_path(@pageant, s) %>|<%= link_to 'd', pageant_score_url(@pageant, s), :confirm => 'Are you sure?', :method => :delete %>]
 <% else -%>
   ---
 <% end -%>

@@ -9,13 +9,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20081005142436) do
+ActiveRecord::Schema.define(:version => 20090715135757) do
+
+  create_table "admins", :force => true do |t|
+    t.string   "hashed_password"
+    t.string   "salt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "contestants", :force => true do |t|
-    t.integer  "number"
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "pageant_id"
+    t.integer  "position"
   end
 
   create_table "judges", :force => true do |t|
@@ -26,11 +34,13 @@ ActiveRecord::Schema.define(:version => 20081005142436) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "name"
+    t.integer  "pageant_id"
   end
 
-  create_table "judges_rounds", :id => false, :force => true do |t|
-    t.integer "round_id", :null => false
-    t.integer "judge_id", :null => false
+  create_table "pageants", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "rounds", :force => true do |t|
@@ -38,8 +48,10 @@ ActiveRecord::Schema.define(:version => 20081005142436) do
     t.float    "max_score"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ordering"
     t.string   "abbreviation", :limit => 8
+    t.integer  "pageant_id"
+    t.integer  "position"
+    t.boolean  "manual"
   end
 
   create_table "scores", :force => true do |t|
@@ -50,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20081005142436) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "locked"
+    t.integer  "pageant_id"
   end
 
 end

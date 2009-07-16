@@ -1,31 +1,29 @@
-<div class="block">
-  <div class="title">
-    <h2><%=h @judge.alias %></h2>
-    <p>Username: <%=h @judge.username %></p>
-  </div>
+<p>
+  <%= link_to 'Back', @pageant  %> | 
+  <%= link_to 'Destroy Judge\'s Scores', destroy_all_pageant_scores_url(:judge_id => @judge.id), :method=>:delete, :confirm=>"Are you sure?" %> | 
+  <%= link_to 'Printable Report', report_pageant_judge_url(:id=>@judge.id, :format=>:pdf) %> |
+    <%= link_to 'Logout', :controller => :admins, :action => 'logout'%>
+</p>
+
+<h2><%=h @judge.alias  %> - <%=h @judge.name %> <% if not Score.scoring_locked_for_judge?(@judge) -%> (Incomplete) <% end -%></h2>
   
-  <table>
-    <tr>
-    <th>Contestant</th>
-      <% @rounds.each do |r| -%>
-        <th align="right" title="r.description"><%= r.abbreviation %><br/> (<%= number_with_precision(r.max_score, 2) %>)
-      <% end -%>
-    <th align="right">Total</th>
-    </tr>
-    <% @contestants.each do |c| -%>
-      <tr>
-        <td><%= c.number %></td>
-        <% @rounds.each do |r| -%>
-        <%= render(:partial => '/scores/showscore', :locals => {:contestant_id => c.id, :judge_id=>@judge.id, :round_id=>r.id}) -%>
-        <% end -%>
-        <td align="right"><%= number_with_precision(Score.judge_total_for_contestant(@judge, c), 2)%> (<%=@judge_rankings[c.id]%>)</td>
-      </tr>
+<table>
+  <tr>
+  <th>Contestant</th>
+    <% @rounds.each do |r| -%>
+      <th align="right" title="r.description"><%= r.position %>. <%= r.abbreviation %><br/> (<%= number_with_precision(r.max_score, 2) %>)
     <% end -%>
-  </table>
-  
-  <p class="links">
-    <%= link_to 'Destroy Judge\'s Scores', destroy_all_scores_url(:judge_id => @judge.id), :method=>:delete, :confirm=>"Are you sure?" %> | 
-    <%= link_to 'Printable Report', report_judge_url(:id=>@judge.id, :format=>:pdf) %>
-  </p>
-  
-</div>
+  <th align="right">Total</th>
+  </tr>
+  <% @contestants.each do |c| -%>
+    <tr>
+      <td><%= c.position %>. <%= c.name %></td>
+      <% @rounds.each do |r| -%>
+      <%= render(:partial => '/scores/showscore', :locals => {:pageant_id => @pageant.id, :contestant_id => c.id, :judge_id=>@judge.id, :round_id=>r.id}) -%>
+      <% end -%>
+      <td align="right"><%= number_with_precision(Score.judge_total_for_contestant(@judge, c), 2)%> (<%=@judge_rankings[c.id]%>)</td>
+    </tr>
+  <% end -%>
+</table>
+
+
