@@ -1,0 +1,15 @@
+<h2>First Use - Create Administrator Password</h2>
+<% form_for(@admin) do |f| %>
+  <%= f.error_messages %>
+  <p>
+		<label for="password">Password</label>
+    <%= f.password_field :password %>
+  </p>
+  <p>
+		<label for="password_confirmation">Confirmation</label>
+    <%= f.password_field :password_confirmation %>
+  </p>
+  <p>
+    <%= f.submit "Create" %>
+  </p>  
+<% end %>
