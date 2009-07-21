@@ -1,19 +1,15 @@
-Instructions for setting up the Rails environment to run Agjudge tayon.
-
-= Introduction =
-
-Add your content here.
-
-
-= Details =
-The following steps will prepare your environment to run Agjudge tayon.
-  # Download and install the Ruby 1.8.6 One-Click Installer available from http://www.ruby-lang.org/en/downloads/.  During the installation, be sure to check the "Enable RubyGems" option.
-  # Install Rails using RubyGems by issuing the following command at the DOS command prompt:
+= Setting Up the Environment =
+The following steps will prepare your environment to run _Agjudge tayon_.
+ # Download and install the _Ruby 1.8.6 One-Click Installer_ available from http://www.ruby-lang.org/en/downloads/.  During the installation, be sure to check the "Enable RubyGems" option.
+ # Install _Rails_ using RubyGems by issuing the following command at the DOS command prompt:
   `>> gems install rails --version=2.3.2`
-  # Install Prawn (which is used for report generation) by issuing the following command at the DOS command prompt:
- `>> gems install prawn`
-  # Install the SQLite3 Ruby library by issuing the following command at the DOS command prompt:
-  `>> gems install sqlite3-ruby --version=1.2.3`
-  # Install SQLite3 for Windows by downloading the following two zip files and unzipping them into /WINDOWS/system32
+ # Install _Prawn_ (which is used for report generation) by issuing the following command at the DOS command prompt:
+  `>> gems install prawn`
+ # Install the _SQLite3 Ruby library_ by issuing the following command at the DOS command prompt:
+   `>> gems install sqlite3-ruby --version=1.2.3`
+ # Install _SQLite3 for Windows_ by downloading the following two zip files and unzipping them into /WINDOWS/system32
   * http://www.sqlite.org/sqlite-3_6_16.zip
   * http://www.sqlite.org/sqlitedll-3_6_16.zip
+ # Download and unzip this file to the c: drive.  
+
+= First Use = 
