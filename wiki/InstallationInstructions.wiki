@@ -28,4 +28,4 @@ C:\agjudgetayon>ruby agjudgetayon.rb
  # From a web browser (Firefox, Internet Explorer, etc.) visit the URL http://localhost:3000
 
 = Running for First Time = 
-The first time that you access _Agjudge tayon!_ you will be greeted with the screen below.  This is your opportunity to set the administrator password.  Do not forget the password!  If you do, it is impossible to retrieve and you will need to repeat Step 6 under _Setting up the Environment_ above.  This will result in the loss of any pageant data that has already been saved.
+The first time that you access _Agjudge tayon!_ you will be greeted with the screen below.  This is your opportunity to set the administrator password.  Do not forget the password!  If you do, it is impossible to retrieve and you will need to delete the "agjudgetayon" directory and repeat Step 6 under _Setting up the Environment_ above.  This will result in the loss of any pageant data that has already been saved.
