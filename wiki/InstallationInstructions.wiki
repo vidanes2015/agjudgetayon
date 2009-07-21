@@ -12,4 +12,18 @@ The following steps will prepare your environment to run _Agjudge tayon_.
   * http://www.sqlite.org/sqlitedll-3_6_16.zip
  # Download and unzip http://agjudgetayon.googlecode.com/files/agjudgetayon.zip to the `c:` drive.  
 
-= First Use = 
+= Running _Agjudge tayon!_ = 
+
+= First Use =
+
+= Managing Pageants = 
+
+= Managing Rounds = 
+
+= Managing Judges = 
+
+= Managing Contestants =
+
+= Judging Interface =
+
+= Printing Reports =
