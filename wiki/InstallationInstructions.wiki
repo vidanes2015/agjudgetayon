@@ -10,6 +10,6 @@ The following steps will prepare your environment to run _Agjudge tayon_.
  # Install _SQLite3 for Windows_ by downloading the following two zip files and unzipping them into /WINDOWS/system32
   * http://www.sqlite.org/sqlite-3_6_16.zip
   * http://www.sqlite.org/sqlitedll-3_6_16.zip
- # Download and unzip this file to the `c:` drive.  
+ # Download and unzip http://agjudgetayon.googlecode.com/files/agjudgetayon.zip to the `c:` drive.  
 
 = First Use = 
