@@ -1,5 +1,6 @@
 class AdminController < ApplicationController
   
+
   def login
     session[:judge_id] = nil
     if request.post?
